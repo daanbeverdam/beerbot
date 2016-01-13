@@ -6,6 +6,5 @@
 /**/*.log
 main_data
 data
-token.txt
-prefs.txt
 scheduled_events
+.env
