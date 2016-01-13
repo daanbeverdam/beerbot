@@ -1,0 +1,11 @@
+/build
+/*.pyc
+/**/*.pyc
+.DS_Store
+/*.log
+/**/*.log
+main_data
+data
+token.txt
+prefs.txt
+scheduled_events
