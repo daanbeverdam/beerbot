@@ -6,4 +6,5 @@ class Meal(Model):
     id = PrimaryKeyField()
     name = CharField()
     class Meta:
-        database = ApplicationDatabase.connect()
+        database = ApplicationDatabase()
+        database = database.connect()

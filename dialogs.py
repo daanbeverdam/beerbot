@@ -29,8 +29,11 @@ help = {'en': {
 }
 
 findbeer = {'en': {
-    'usage': "Find beers yo.",
-    'reply': "Beer found!"
+    'usage': "Find the best beer to go with your meal.",
+    'specify': "Please choose your mealtype from the list below, or type "
+    "in a more specific meal.",
+    'no_such_meal': "Sorry, we couldn't find the meal you're looking for. "
+    "Please select the mealtype below that corresponds the most."
 }}
 
 start = {'en': {

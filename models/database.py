@@ -1,6 +1,8 @@
+from peewee import *
+
 class ApplicationDatabase(object):
 
-    def connect():
+    def connect(self):
         with open('.env') as f:
             env = f.read().splitlines()
         database = env[4]
