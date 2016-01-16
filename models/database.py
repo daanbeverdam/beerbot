@@ -2,7 +2,7 @@ from peewee import *
 
 class ApplicationDatabase(object):
 
-    def connect(self):
+    def get(self):
         with open('.env') as f:
             env = f.read().splitlines()
         database = env[4]

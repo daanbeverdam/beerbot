@@ -1,10 +1,7 @@
 from peewee import *
-from database import ApplicationDatabase
+from base import Base
 
-class Beer(Model):
+class Beer(Base):
     """The Beer class epresents a beer entry in the database."""
     id = PrimaryKeyField()
     name = CharField()
-    class Meta:
-        database = ApplicationDatabase()
-        database = database.connect()
