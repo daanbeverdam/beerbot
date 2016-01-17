@@ -38,5 +38,7 @@ findbeer = {'en': {
 
 start = {'en': {
     'usage': "The /start command initializes the bot.",
+    'user_registered': "Hey there, welcome! I don't know you yet. Please "
+    "input your preferences.",
     'reply': "Bot enabled. Type /help for a list of commands."
 }}

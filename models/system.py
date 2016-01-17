@@ -2,6 +2,8 @@ from beer import Beer
 from meal import Meal
 from beer_meal import BeerMeal
 from mealcategory import MealCategory
+from user import User
+from preferences import Preferences
 
 class BeerAdvisor(object):
     """Main class which manipulates and retrieves data from the database in
@@ -12,15 +14,20 @@ class BeerAdvisor(object):
         self.category = None # will contain category that user inputs
 
     def find_match(self):
-        query = BeerMeal.select().where(BeerMeal.meal_id == self.meal.id)
         candidate_beers = []
-        for relation in query:
-            candidate = Beer.get(Beer.id == relation.beer_id)
-            candidate_beers.append(candidate)
+
+        if self.meal: # if user input is a meal
+            query = BeerMeal.select().where(BeerMeal.meal_id == self.meal.id)
+            for relation in query:
+                candidate = Beer.get(Beer.id == relation.beer_id)
+                candidate_beers.append(candidate)
+        elif self.category: # if user input is a meal category
+            pass # TODO implement match finding via category
+
         if len(candidate_beers) > 0:
-            return candidate_beers[0]
+            return candidate_beers[0] # for now just return the first beer
         else:
-            pass # What? No beer? This shouldn't happen. Do something to fix!
+            self.emergency_plan(sirens=True) # What? No beer? This shouldn't happen. Do something to fix!
 
     def input_meal(self, meal_name):
         self.meal = Meal.get(Meal.name == meal_name)
@@ -29,7 +36,7 @@ class BeerAdvisor(object):
         self.category = MealCategory.get(MealCategory.name == category_name)
 
     def check_database_for(self, meal_name=None, beer_name=None,
-                           category_name=None):
+                           category_name=None, user_chat_id=None):
         """Checks whether or not a meal or beer name is in the database."""
         if meal_name:
             query = Meal.select().where(Meal.name == meal_name)
@@ -37,8 +44,10 @@ class BeerAdvisor(object):
             query = Beer.select().where(Beer.name == beer_name)
         elif category_name:
             query = MealCategory.select().where(MealCategory.name == category_name)
+        elif user_chat_id:
+            query = User.select().where(User.chat_id == user_chat_id)
         else:
-            print 'No meal or beer name specified!'
+            print 'No query specified!'
             return False
         if len(query) > 0:
             return True # return true when results are found
@@ -50,3 +59,15 @@ class BeerAdvisor(object):
             query = MealCategory.select()
             categories = [category.name for category in query]
         return categories
+
+    def register_user(self, chat_id, name):
+        new_user = User(chat_id=chat_id, name=name)
+        # TODO also make preferences table
+        new_user.save()
+
+    def emergency_plan(self, sirens=False):
+        if sirens:
+            print "Sound the alarm! PEEEWEEEWEEE!"
+        else:
+            print "Sound the alarm! *silent alarm*"
+
