@@ -33,7 +33,7 @@ findbeer = {'en': {
     'specify': "Please choose your mealtype from the list below, or type "
     "in a more specific meal.",
     'no_such_meal': "Sorry, we couldn't find the meal you're looking for. "
-    "Please select the mealtype below that corresponds the most."
+    "Please select the mealtype below that corresponds the most to your meal."
 }}
 
 start = {'en': {

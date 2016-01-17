@@ -4,6 +4,7 @@ from models.system import BeerAdvisor
 class FindBeerCommand(Command):
 
     def reply(self):
+        """Main function of the command (required by the PyBot framework)."""
         if self.is_active():
             self.activate(False) # deactivates the listener
             return self.handle_input(self.message.text)
@@ -11,24 +12,36 @@ class FindBeerCommand(Command):
             return self.handle_input(self.arguments)
         else:
             self.activate() # activates the listener so it can receive input
-            return {'message': self.dialogs['specify']}
+            keyboard = self.format_keyboard(BeerAdvisor().get_categories())
+            return {'message': self.dialogs['specify'], 'keyboard': keyboard}
 
     def handle_input(self, query):
+        """Handles the input from the user and returns appropriate message."""
         system = BeerAdvisor() # initialize beer advisory system
-        if system.check_database_for(query):  # check if name in the database
+
+        if system.check_database_for(meal_name=query):  # check if name in database
             system.input_meal(query)  # input meal by name
-            # TODO: input meal by category?
-            recommended_beer = system.find_match() # find a match
-            reply = self.format_reply(recommended_beer) # turn the beer object into a human readable reply
-            return {'message': reply} # return the reply to the user
+        elif system.check_database_for(category_name=query):  # check if category in database
+            system.input_category(query)  # input category
         else:
             meal_categories = system.get_categories()
-            return {'message': self.dialogs['no_such_meal']} # or disappoint them
+            keyboard = self.format_keyboard(meal_categories)
+            return {'message': self.dialogs['no_such_meal'], 'keyboard': keyboard}
+        recommended_beer = system.find_match() # find a match
+        reply = self.format_reply(recommended_beer) # turn the beer object into a human readable reply
+        return {'message': reply, 'keyboard': None} # return the reply to the user
 
     def format_reply(self, recommended_beer):
         """Returns a human readable reply. Input should be a beer object."""
         return recommended_beer.name # for now just returns the name
         # much TODO
+
+    def format_keyboard(self, array, n=2):
+        keyboard = []
+        n = max(1, n)
+        keyboard = [array[i:i + n] for i in range(0, len(array), n)]
+        return keyboard
+
 
     def get_picture(self):
         """Gets the image associated with the beer."""

@@ -8,7 +8,8 @@ class BeerAdvisor(object):
     order to generate beer recommendations."""
 
     def __init__(self):
-        self.meal = None # will contain meal object representing user input
+        self.meal = None # will contain meal that user inputs
+        self.category = None # will contain category that user inputs
 
     def find_match(self):
         query = BeerMeal.select().where(BeerMeal.meal_id == self.meal.id)
@@ -22,27 +23,26 @@ class BeerAdvisor(object):
             pass # What? No beer? This shouldn't happen. Do something to fix!
 
     def input_meal(self, meal_name):
-        meal_id = self.get_meal_id(meal_name)
-        self.meal = Meal(id=meal_id, name=meal_name) # construct meal object
+        self.meal = Meal.get(Meal.name == meal_name)
 
-    def check_database_for(self, meal_name=None, beer_name=None):
+    def input_category(self, category_name):
+        self.category = MealCategory.get(MealCategory.name == category_name)
+
+    def check_database_for(self, meal_name=None, beer_name=None,
+                           category_name=None):
         """Checks whether or not a meal or beer name is in the database."""
         if meal_name:
             query = Meal.select().where(Meal.name == meal_name)
         elif beer_name:
             query = Beer.select().where(Beer.name == beer_name)
+        elif category_name:
+            query = MealCategory.select().where(MealCategory.name == category_name)
         else:
             print 'No meal or beer name specified!'
             return False
         if len(query) > 0:
             return True # return true when results are found
         return False
-
-    def get_meal_id(self, meal_name):
-        """Gets meal id that belongs to a given meal_name."""
-        query = Meal.select().where(Meal.name == meal_name)
-        meal = query[0]
-        return meal.id
 
     def get_categories(self, desired_categories='meal'):
         """Gets categories from the database and returns them as a list."""
