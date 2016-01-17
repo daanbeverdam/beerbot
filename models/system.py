@@ -1,6 +1,7 @@
 from beer import Beer
 from meal import Meal
 from beer_meal import BeerMeal
+from mealcategory import MealCategory
 
 class BeerAdvisor(object):
     """Main class which manipulates and retrieves data from the database in
@@ -15,16 +16,37 @@ class BeerAdvisor(object):
         for relation in query:
             candidate = Beer.get(Beer.id == relation.beer_id)
             candidate_beers.append(candidate)
-        return str(candidate_beers)
+        if len(candidate_beers) > 0:
+            return candidate_beers[0]
+        else:
+            pass # What? No beer? This shouldn't happen. Do something to fix!
 
     def input_meal(self, meal_name):
         meal_id = self.get_meal_id(meal_name)
-        if meal_id:
-            self.meal = Meal(id=meal_id, name=meal_name) # construct meal object
+        self.meal = Meal(id=meal_id, name=meal_name) # construct meal object
+
+    def check_database_for(self, meal_name=None, beer_name=None):
+        """Checks whether or not a meal or beer name is in the database."""
+        if meal_name:
+            query = Meal.select().where(Meal.name == meal_name)
+        elif beer_name:
+            query = Beer.select().where(Beer.name == beer_name)
+        else:
+            print 'No meal or beer name specified!'
+            return False
+        if len(query) > 0:
+            return True # return true when results are found
+        return False
 
     def get_meal_id(self, meal_name):
-        meals = Meal.select() # select all meals in the database
-        for meal in meals:
-            if meal.name == meal_name:
-                return meal.id # return id if meal is found in the database
-        return None # return None if meal is not in the database
+        """Gets meal id that belongs to a given meal_name."""
+        query = Meal.select().where(Meal.name == meal_name)
+        meal = query[0]
+        return meal.id
+
+    def get_categories(self, desired_categories='meal'):
+        """Gets categories from the database and returns them as a list."""
+        if desired_categories == 'meal':
+            query = MealCategory.select()
+            categories = [category.name for category in query]
+        return categories
