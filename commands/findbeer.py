@@ -36,13 +36,6 @@ class FindBeerCommand(Command):
         return recommended_beer.name # for now just returns the name
         # much TODO
 
-    def format_keyboard(self, array, n=2):
-        keyboard = []
-        n = max(1, n)
-        keyboard = [array[i:i + n] for i in range(0, len(array), n)]
-        return keyboard
-
-
     def get_picture(self):
         """Gets the image associated with the beer."""
         pass # much TODO

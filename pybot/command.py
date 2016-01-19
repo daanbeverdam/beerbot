@@ -70,3 +70,10 @@ class Command(object):
 
     def get_image(self, image_link):
         return StringIO.StringIO(urllib.urlopen(image_link).read()).getvalue()
+
+    def format_keyboard(self, array, n=2):
+        keyboard = []
+        array = [str(i) for i in array]
+        n = max(1, n)
+        keyboard = [array[i:i + n] for i in range(0, len(array), n)]
+        return keyboard

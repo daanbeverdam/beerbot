@@ -3,7 +3,6 @@ from meal import Meal
 from beer_meal import BeerMeal
 from mealcategory import MealCategory
 from user import User
-from preferences import Preferences
 
 class BeerAdvisor(object):
     """Main class which manipulates and retrieves data from the database in
@@ -27,7 +26,7 @@ class BeerAdvisor(object):
         if len(candidate_beers) > 0:
             return candidate_beers[0] # for now just return the first beer
         else:
-            self.emergency_plan(sirens=True) # What? No beer? This shouldn't happen. Do something to fix!
+            self.emergency_plan(sirens=True) # What? No beer? This shouldn't happen. Sound the alarm!
 
     def input_meal(self, meal_name):
         self.meal = Meal.get(Meal.name == meal_name)
@@ -37,7 +36,7 @@ class BeerAdvisor(object):
 
     def check_database_for(self, meal_name=None, beer_name=None,
                            category_name=None, user_chat_id=None):
-        """Checks whether or not a meal or beer name is in the database."""
+        """Checks the database for various things. Returns truth value."""
         if meal_name:
             query = Meal.select().where(Meal.name == meal_name)
         elif beer_name:
@@ -59,11 +58,6 @@ class BeerAdvisor(object):
             query = MealCategory.select()
             categories = [category.name for category in query]
         return categories
-
-    def register_user(self, chat_id, name):
-        new_user = User(chat_id=chat_id, name=name)
-        # TODO also make preferences table
-        new_user.save()
 
     def emergency_plan(self, sirens=False):
         if sirens:

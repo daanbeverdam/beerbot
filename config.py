@@ -1,6 +1,7 @@
 from commands.start import StartCommand
 from commands.help import HelpCommand
 from commands.findbeer import FindBeerCommand
+from commands.deleteme import DeleteMeCommand
 import dialogs
 # Environment variables can be entered in the .env file
 # Alternatively, you could just enter the values (as string) in this file below.
@@ -16,6 +17,7 @@ PASSWORD = env[6] # password for database
 # Commands can be removed or added:
 COMMAND_LIST = [
                 StartCommand('start', dialogs.start[LANG]),
+                DeleteMeCommand('deleteme', dialogs.deleteme[LANG]),
                 HelpCommand('help', dialogs.help[LANG]),
                 FindBeerCommand('findbeer', dialogs.findbeer[LANG])
                ]

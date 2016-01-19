@@ -28,6 +28,12 @@ help = {'en': {
 }
 }
 
+deleteme = {'en': {
+    'usage': "Delete all your records in the database.",
+    'reply': "All your records are deleted! Who are you again?"
+}
+}
+
 findbeer = {'en': {
     'usage': "Find the best beer to go with your meal.",
     'specify': "Please choose your mealtype from the list below, or type "
@@ -38,7 +44,14 @@ findbeer = {'en': {
 
 start = {'en': {
     'usage': "The /start command initializes the bot.",
-    'user_registered': "Hey there, welcome! I don't know you yet. Please "
-    "input your preferences.",
+    'new_user': "Hi there, welcome! I don't know you yet. Please "
+    "help me get to know you by telling me your preferences, okay?",
+    'color': "Do you prefer dark beers or light beers?",
+    'bitterness': "On a scale from 1-5, how bitter do you like your beers?",
+    'sweetness': "On a scale from 1-5, how sweet do you like your beers?",
+    'alcohol': "How strong do you like your beers?",
+    'user_registered': "Thanks, I'm all set! Use /findbeer to get beer "
+    "reccomendations or use /deleteme to remove yourself from the database.",
+    'whoops!': "Whoops! You did something wrong, please tap /start again.",
     'reply': "Bot enabled. Type /help for a list of commands."
 }}
