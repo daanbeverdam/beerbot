@@ -103,6 +103,7 @@ class PyBot(object):
                                self.dialogs['input'] % command.name)
                 elif command.listen(message):
                     self.handle_reply(command, message)
+                command.data.close()
             if (message.contains_command and message.text.split()[0][1:]
                     not in self.command_names):
                 self.reply(message.chat_id, self.dialogs['no_such_command'])

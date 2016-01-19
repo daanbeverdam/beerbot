@@ -6,5 +6,6 @@
 /**/*.log
 main_data
 data
+database.sql
 scheduled_events
 .env

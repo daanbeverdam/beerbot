@@ -3,6 +3,7 @@ from meal import Meal
 from beer_meal import BeerMeal
 from mealcategory import MealCategory
 from user import User
+import random
 
 class BeerAdvisor(object):
     """Main class which manipulates and retrieves data from the database in
@@ -16,15 +17,19 @@ class BeerAdvisor(object):
         candidate_beers = []
 
         if self.meal: # if user input is a meal
-            query = BeerMeal.select().where(BeerMeal.meal_id == self.meal.id)
-            for relation in query:
-                candidate = Beer.get(Beer.id == relation.beer_id)
-                candidate_beers.append(candidate)
+            query = Beer.select().where(Beer.meal == self.meal.name)
+            if len(query) > 0:
+                for candidate in query:
+                    candidate_beers.append(candidate)
+
         elif self.category: # if user input is a meal category
-            pass # TODO implement match finding via category
+            query = Beer.select().where(Beer.mealcategory == self.category.name)
+            if len(query) > 0:
+                for candidate in query:
+                    candidate_beers.append(candidate)
 
         if len(candidate_beers) > 0:
-            return candidate_beers[0] # for now just return the first beer
+            return random.choice(candidate_beers)
         else:
             self.emergency_plan(sirens=True) # What? No beer? This shouldn't happen. Sound the alarm!
 

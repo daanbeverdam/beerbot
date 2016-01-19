@@ -27,6 +27,7 @@ class FindBeerCommand(Command):
             meal_categories = system.get_categories()
             keyboard = self.format_keyboard(meal_categories)
             return {'message': self.dialogs['no_such_meal'], 'keyboard': keyboard}
+
         recommended_beer = system.find_match() # find a match
         reply = self.format_reply(recommended_beer) # turn the beer object into a human readable reply
         return {'message': reply, 'keyboard': None} # return the reply to the user

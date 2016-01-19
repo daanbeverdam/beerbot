@@ -4,8 +4,18 @@ from models.user import User
 
 
 class DeleteMeCommand(Command):
-    """Something here"""
-
+    """Deletes an user from the database."""
     def reply(self):
-        User.get(User.chat_id == self.message.chat_id).delete_instance()
-        return {'message': self.dialogs['reply']}
+        if self.is_active() and self.message.text == 'Yes':
+            self.activate(False)
+            try:
+                User.get(User.chat_id == self.message.chat_id).delete_instance()
+                return {'message': self.dialogs['reply'], 'keyboard': None}
+            except:
+                return {'message': "You're already deleted!"}
+        if self.is_active() and self.message.text == 'No':
+            self.activate(False)
+            return {'message': "Ok, I won't delete you."}
+        else:
+            self.activate()
+            return {'message': "Are you sure?", 'keyboard': [['Yes', 'No']]}
