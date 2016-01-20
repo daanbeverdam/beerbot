@@ -10,34 +10,29 @@ class BeerAdvisor(object):
     order to generate beer recommendations."""
 
     def __init__(self):
-        self.meal = None # will contain meal that user inputs
-        self.category = None # will contain category that user inputs
+        self.input # will contain user input
 
     def find_match(self):
         candidate_beers = []
-
-        if self.meal: # if user input is a meal
-            query = Beer.select().where(Beer.meal == self.meal.name)
-            if len(query) > 0:
-                for candidate in query:
-                    candidate_beers.append(candidate)
-
-        elif self.category: # if user input is a meal category
-            query = Beer.select().where(Beer.mealcategory == self.category.name)
-            if len(query) > 0:
-                for candidate in query:
-                    candidate_beers.append(candidate)
-
+        # Search meal names:
+        query = Beer.select().where(Beer.meal == self.input)
+        if len(query) > 0:
+            for candidate in query:
+                candidate_beers.append(candidate)
+        # Search meal categories:
+        query = Beer.select().where(Beer.mealcategory == self.input)
+        if len(query) > 0:
+            for candidate in query:
+                candidate_beers.append(candidate)
+        # Return best choice:
         if len(candidate_beers) > 0:
             return random.choice(candidate_beers)
         else:
             self.emergency_plan(sirens=True) # What? No beer? This shouldn't happen. Sound the alarm!
+            return None
 
-    def input_meal(self, meal_name):
-        self.meal = Meal.get(Meal.name == meal_name)
-
-    def input_category(self, category_name):
-        self.category = MealCategory.get(MealCategory.name == category_name)
+    def input(self, query):
+        self.input = query
 
     def check_database_for(self, meal_name=None, beer_name=None,
                            category_name=None, user_chat_id=None):

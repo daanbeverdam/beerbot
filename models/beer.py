@@ -13,3 +13,4 @@ class Beer(Base):
     color = CharField()
     percentage = DecimalField()
     description = CharField()
+    imageid = IntegerField()
