@@ -54,5 +54,6 @@ start = {'en': {
     'user_registered': "Thanks, I'm all set! Use /findbeer to get beer "
     "reccomendations or use /deleteme to remove yourself from the database.",
     'whoops!': "Whoops! You did something wrong, please tap /start again.",
-    'reply': "Bot enabled. Type /help for a list of commands."
+    'reply': "Your preferences are stored. Let me find some beers for you! "
+    "Tap /findbeer to begin."
 }}

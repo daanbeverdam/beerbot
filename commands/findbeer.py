@@ -1,12 +1,15 @@
 from pybot.command import Command
 from models.system import BeerAdvisor
+from models.user import User
 import StringIO
 
 class FindBeerCommand(Command):
 
     def reply(self):
         """Main function of the command (required by the PyBot framework)."""
-        if self.is_active():
+        if not self.user_exists(self.message.chat_id):
+            return {'message': 'Please enter your preferences first by using /start.'}
+        elif self.is_active():
             return self.handle_input(self.message.text)
         elif self.arguments:
             return self.handle_input(self.arguments)
@@ -18,7 +21,8 @@ class FindBeerCommand(Command):
     def handle_input(self, query):
         """Handles the input from the user and returns appropriate message."""
         system = BeerAdvisor() # initialize beer advisory system
-        system.input(query)
+        user = User.get(User.chat_id == self.message.chat_id)
+        system.input_data(query, user)
         recommended_beer = system.find_match() # find a match
         if recommended_beer:
             self.activate(False) # deactivates the listener
@@ -31,11 +35,18 @@ class FindBeerCommand(Command):
 
     def format_reply(self, recommended_beer):
         """Returns a human readable reply. Input should be a beer object."""
-        caption = recommended_beer.name
-        photo = open('media/' + str(recommended_beer.imageid) + '.jpg').read()
-        photo = StringIO.StringIO(photo).getvalue()
-        return {'photo': photo, 'caption': caption}
+        caption = "My advice would be: " + recommended_beer.name
+        image_id = str(recommended_beer.imageid) # if recommended_beer.imageid < 9 else str(1)
+        try:
+            photo = open('media/' + image_id + '.jpg').read()
+            photo = StringIO.StringIO(photo).getvalue()
+            return {'photo': photo, 'caption': caption}
+        except:
+            return {'message': caption + ". Sorry I don't have a photo yet!"}
 
-    def get_picture(self):
-        """Gets the image associated with the beer."""
-        pass # much TODO
+    def user_exists(self, chat_id):
+        try:
+            User.get(User.chat_id == chat_id)
+            return True
+        except:
+            return False

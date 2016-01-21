@@ -56,7 +56,7 @@ class StartCommand(Command):
 
             elif self.data['register_phase'] == 5:
                 user = self.data['new_user']
-                user.percentage = 7 # TODO change this to actual user input
+                user.percentage = self.message.text
                 self.data['new_user'] = user
                 self.data['new_user'].save() # save user to database
                 self.activate(False) # deactivate the listener

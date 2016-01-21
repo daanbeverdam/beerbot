@@ -11,4 +11,4 @@ class User(Base):
     color = CharField() # light or dark
     bitterness = IntegerField() # 1-5 scale
     sweetness = IntegerField() # 1-5 scale
-    percentage = DecimalField() # alcohol percentage
+    percentage = CharField() # alcohol percentage

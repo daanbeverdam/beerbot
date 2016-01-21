@@ -150,11 +150,16 @@ class PyBot(object):
         elif photo:
             self.send_action(chat_id, 'upload_photo')
             parameters = [('chat_id', str(chat_id))]
+            reply_markup = ({
+                'hide_keyboard': True
+            })
+            reply_markup = json.dumps(reply_markup)
+            parameters.append(('reply_markup', reply_markup))
             if caption:
                 parameters.append(('caption', caption.encode('utf-8')))
             response = post_multipart(self.base_url + 'sendPhoto', parameters,
                                       [('photo', 'photo.jpg', photo)])
-            self.log('Bot sent photo to ' + str(chat_id) + '.')
+            self.log('Bot sent photo to ' + str(chat_id) + ' with caption: ' + caption)
         elif gif or document:
             file_name = 'image.gif' if gif else 'document.file'
             self.send_action(chat_id, 'upload_document')
