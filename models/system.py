@@ -41,7 +41,7 @@ class BeerAdvisor(object):
             # scores to the terminal. Uncomment for debugging purposes, or if
             # you're just curious. ;-)
             for beer in candidate_beers:
-               print beer.name
+               print beer.name.encode('utf8', 'replace')
                print beer.penalties
 
             return candidate_beers[0] # return the first (best) candidate
@@ -61,7 +61,10 @@ class BeerAdvisor(object):
             if beer.color != self.user.color: # if the colors don't match...
                 beer.penalties += 1 #... give a penalty to that beer
 
-            if not eval(str(beer.percentage) + percentages[self.user.percentage] % str(beer.percentage)):
+            if self.user.percentage == '5%-8%':
+                evaluation = str(beer.percentage) + percentages[self.user.percentage] % str(beer.percentage)
+            else: evaluation = str(beer.percentage) + percentages[self.user.percentage]
+            if not eval(evaluation):
                 beer.penalties += 1 # assign penalty if alcohol percentage is not in preferred range
 
             # Penalties for sweetness and bitterness is the difference between
