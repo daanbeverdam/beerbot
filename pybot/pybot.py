@@ -8,6 +8,7 @@ import shelve
 import traceback
 import os
 from datetime import datetime
+from models.base import Base
 
 
 class PyBot(object):
@@ -64,6 +65,7 @@ class PyBot(object):
                 self.log(json_entry=result)
         elif body['ok'] == False:
             self.log('Invalid response!')
+        Base.Meta.database.close()
 
     def check_for_scheduled_events(self):
         scheduled_events = shelve.open('scheduled_events')

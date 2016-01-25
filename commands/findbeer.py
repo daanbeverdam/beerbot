@@ -6,7 +6,7 @@ import StringIO
 class FindBeerCommand(Command):
 
     def reply(self):
-        """Main function of the command (required by the PyBot framework)."""
+        """Main function of the command, required by the PyBot framework."""
         if not self.user_exists(self.message.chat_id):
             return {'message': 'Please enter your preferences first by using /start.'}
         elif self.is_active():
@@ -42,7 +42,7 @@ class FindBeerCommand(Command):
             photo = StringIO.StringIO(photo).getvalue()
             return {'photo': photo, 'caption': caption}
         except:
-            return {'message': caption + ". Sorry I don't have a photo yet!"}
+            return {'message': caption + ". Sorry I don't have a photo yet!", 'keyboard': None}
 
     def user_exists(self, chat_id):
         try:
